@@ -29,8 +29,7 @@ const NoOrdersText = styled.p`
 `;
 
 const Orders = () => {
-  const orders = useSelector((state) => state.orders)[0];
-
+  const orders = useSelector((state) => state.orders).flat();
   return (
     <OrdersContainer>
       <h2>Orders</h2>
