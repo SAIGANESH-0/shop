@@ -6,11 +6,13 @@ import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./cartSlice";
 import productsReducer from "./productsSlice";
 import { BrowserRouter } from "react-router-dom";
+import ordersReducer from "./ordersSlice";
 
 const store = configureStore({
   reducer: {
     cart: cartReducer,
     products: productsReducer,
+    orders: ordersReducer,
   },
 });
 

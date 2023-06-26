@@ -42,6 +42,7 @@ const Header = ({ cartCount }) => {
         <NavItem to="/cart">
           Cart {cartCount > 0 && <CartCount>{cartCount}</CartCount>}
         </NavItem>
+        <NavItem to="/orders">Orders</NavItem>
       </Navigation>
     </HeaderContainer>
   );

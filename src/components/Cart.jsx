@@ -6,6 +6,7 @@ import {
   increaseQuantity,
   decreaseQuantity,
 } from "../cartSlice";
+import { useNavigate } from "react-router-dom";
 
 const CartContainer = styled.div`
   margin: 20px;
@@ -84,9 +85,10 @@ const CheckoutButton = styled.button`
   margin-top: 10px;
 `;
 
-const Cart = () => {
+const Cart = ({ setPrice }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
+  const Navigate = useNavigate();
 
   const handleIncreaseQuantity = (item) => {
     dispatch(increaseQuantity(item.id));
@@ -105,12 +107,8 @@ const Cart = () => {
       (total, item) => total + item.price * item.quantity,
       0
     );
+    setPrice(totalPrice);
     return totalPrice.toFixed(2);
-  };
-
-  const handleCheckout = () => {
-    // Handle checkout logic here
-    console.log("Checkout button clicked");
   };
 
   return (
@@ -137,7 +135,9 @@ const Cart = () => {
       ))}
 
       <TotalPrice>Total Price: ${calculateTotalPrice()}</TotalPrice>
-      <CheckoutButton onClick={handleCheckout}>Checkout</CheckoutButton>
+      <CheckoutButton onClick={() => Navigate("payment")}>
+        Checkout
+      </CheckoutButton>
     </CartContainer>
   );
 };
