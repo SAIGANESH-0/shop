@@ -46,7 +46,9 @@ const SearchInput = styled.input`
 `;
 
 const Products = () => {
-  const { data, isLoading, error } = useApi("https://dummyjson.com/products");
+  const { data, isLoading, error } = useApi(
+    "https://dummyjson.com/products?limit=90"
+  );
   const dispatch = useDispatch();
   const [sortBy, setSortBy] = useState("");
   const [filterBy, setFilterBy] = useState("");

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart, removeFromCart } from "../cartSlice";
@@ -81,10 +81,28 @@ const RemoveButton = styled.button`
   cursor: pointer;
 `;
 
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+`;
+
+const PaginationButton = styled.button`
+  padding: 8px 16px;
+  background-color: ${({ active }) => (active ? "#007bff" : "#fff")};
+  color: ${({ active }) => (active ? "#fff" : "#007bff")};
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 5px;
+`;
+
 const Product = ({ products }) => {
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
   const Navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 6;
 
   const handleAddToCart = (product, e) => {
     e.stopPropagation();
@@ -100,10 +118,27 @@ const Product = ({ products }) => {
     Navigate(`/products/${productId}`);
   };
 
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const totalPages = Math.ceil(products.length / productsPerPage);
+  const pageNumbers = Array.from(
+    { length: totalPages },
+    (_, index) => index + 1
+  );
+
+  const handleClickPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
-    <ProductsContainer>
-      {products &&
-        products.map((p) => (
+    <div>
+      <ProductsContainer>
+        {currentProducts.map((p) => (
           <ProductContainer onClick={() => handleProductClick(p.id)} key={p.id}>
             <Thumbnail src={p.thumbnail} alt={p.title} />
             <Title>{p.title}</Title>
@@ -125,7 +160,20 @@ const Product = ({ products }) => {
             )}
           </ProductContainer>
         ))}
-    </ProductsContainer>
+      </ProductsContainer>
+
+      <PaginationContainer>
+        {pageNumbers.map((pageNumber) => (
+          <PaginationButton
+            key={pageNumber}
+            active={pageNumber === currentPage}
+            onClick={() => handleClickPage(pageNumber)}
+          >
+            {pageNumber}
+          </PaginationButton>
+        ))}
+      </PaginationContainer>
+    </div>
   );
 };
 
